@@ -36,7 +36,7 @@ const KakaoMap = () => {
     let marker = new kakao.maps.Marker({ position: markerPosition });
 
     marker.setMap(map);
-  }, []);
+  }, [position.lat, position.lng]);
 
   return (
     <div>
