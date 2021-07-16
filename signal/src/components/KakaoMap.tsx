@@ -25,12 +25,17 @@ const KakaoMap = () => {
 
     navigator.geolocation.getCurrentPosition((pos) => sucess(pos));
 
-    var container = document.getElementById('map');
-    var options = {
+    let container = document.getElementById('map');
+    let options = {
       center: new kakao.maps.LatLng(position.lat, position.lng),
       level: 3,
     };
-    var map = new kakao.maps.Map(container, options);
+    let map = new kakao.maps.Map(container, options);
+
+    let markerPosition = new kakao.maps.LatLng(position.lat, position.lng);
+    let marker = new kakao.maps.Marker({ position: markerPosition });
+
+    marker.setMap(map);
   }, []);
 
   return (
