@@ -1,6 +1,11 @@
 import { atom } from 'recoil';
 
-export const stationState = atom<any>({
-  key: 'stationState',
+export const stationListState = atom<any>({
+  key: 'stationListState',
+  default: null,
+});
+
+export const arrivalBusInfoListState = atom({
+  key: 'arrivalBusInfoListState',
   default: null,
 });
