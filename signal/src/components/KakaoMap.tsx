@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { useRecoilValue } from 'recoil';
+import { stationListState } from '../Recoil';
 
 const kakao = (window as any).kakao;
 
@@ -13,6 +15,9 @@ const KakaoMap = () => {
     lat: 0,
     lng: 0,
   });
+  const stationList = useRecoilValue(stationListState);
+
+  console.log('map station', stationList);
 
   useEffect(() => {
     const sucess = (pos: any) => {
@@ -32,11 +37,26 @@ const KakaoMap = () => {
     };
     let map = new kakao.maps.Map(container, options);
 
-    let markerPosition = new kakao.maps.LatLng(position.lat, position.lng);
-    let marker = new kakao.maps.Marker({ position: markerPosition });
+    let markerList = stationList?.map((el: any) => {
+      return {
+        title: el.stationNm,
+        latlng: new kakao.maps.LatLng(el.gpsY[0], el.gpsX[0]),
+      };
+    });
 
-    marker.setMap(map);
-  }, [position.lat, position.lng]);
+    console.log('list', markerList);
+
+    if (markerList) {
+      for (let i = 0; i < markerList.length; i++) {
+        let marker = new kakao.maps.Marker({
+          map: map,
+          position: markerList[i].latlng,
+          title: markerList[i].title,
+        });
+        marker.setMap(map);
+      }
+    }
+  }, [position.lat, position.lng, stationList]);
 
   return <div id="map" style={{ width: '100%', height: '1000px' }}></div>;
 };

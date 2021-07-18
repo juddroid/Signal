@@ -67,9 +67,6 @@ const Geolocation = () => {
     stationList && getArrivalBusInfoList(stationList[0].arsId[0]);
   }, [stationList]);
 
-  console.log('stationList', stationList);
-  console.log('bus', arrivalBusInfoList);
-
   return (
     <>
       {stationList && (

@@ -1,11 +1,15 @@
 import styled from 'styled-components';
+import SearchBox from './SearchBox';
 
 const SearchBar = () => {
   return (
-    <SearchBarStyle>
-      <input placeholder="가까운 정류장 찾기" />
-      <div>Search</div>
-    </SearchBarStyle>
+    <>
+      <SearchBarStyle>
+        <input placeholder="가까운 정류장 찾기" />
+        <div>Search</div>
+      </SearchBarStyle>
+      <SearchBox />
+    </>
   );
 };
 
