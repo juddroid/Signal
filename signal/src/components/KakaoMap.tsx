@@ -57,10 +57,20 @@ const KakaoMap = () => {
 
       const xmlData = await fetch(url).then((res) => res.text());
       const jsonData = await xml2js.parseStringPromise(xmlData);
-      const busList = await jsonData.ServiceResult.msgBody[0].itemList.map(
-        (el: any) => el.rtNm[0]
+      console.log(jsonData);
+      const busInfoList = await jsonData.ServiceResult.msgBody[0].itemList.map(
+        (el: any) => {
+          return {
+            rtNm: el.rtNm[0],
+            arrmsg1: el.arrmsg1[0],
+            arrmsg2: el.arrmsg2[0],
+            arrmsgSec1: el.arrmsgSec1[0],
+            arrmsgSec2: el.arrmsgSec2[0],
+          };
+        }
       );
-      return busList;
+
+      return busInfoList;
     };
 
     if (markerList) {
@@ -82,10 +92,13 @@ const KakaoMap = () => {
           infoWindow.close()
         );
         kakao.maps.event.addListener(marker, 'click', async () => {
-          const busList = await getArrivalBusInfoList(stationList[i].arsId[0]);
+          const busInfoList = await getArrivalBusInfoList(
+            stationList[i].arsId[0]
+          );
+          console.log(busInfoList);
           setSelectedStation({
             title: markerList[i].title,
-            busList: busList,
+            busInfoList: busInfoList,
           });
         });
 

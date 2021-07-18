@@ -1,14 +1,18 @@
 import styled from 'styled-components';
 import BusNumber from './BusNumber';
 import { v4 as uuidv4 } from 'uuid';
+import BusArrivalSec from './BusArrivalSec';
 
-const BusList = ({ busList }: { busList: any }) => {
-  console.log('busList', busList);
+const BusList = ({ busInfoList }: { busInfoList: any }) => {
+  console.log('busInfoList', busInfoList);
   return (
     <BusListStyle>
-      {busList &&
-        busList.map((number: string) => (
-          <BusNumber key={uuidv4()} busNumber={number} />
+      {busInfoList &&
+        busInfoList.map((busInfo: any) => (
+          <BusListBox key={uuidv4()}>
+            <BusNumber busNumber={busInfo.rtNm} />
+            <BusArrivalSec arrivalSec={busInfo.arrmsg1} />
+          </BusListBox>
         ))}
     </BusListStyle>
   );
@@ -17,3 +21,13 @@ const BusList = ({ busList }: { busList: any }) => {
 export default BusList;
 
 const BusListStyle = styled.div``;
+
+const BusListBox = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 5px 15px;
+
+  :first-child {
+    padding-top: 15px;
+  }
+`;

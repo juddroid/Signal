@@ -7,9 +7,5 @@ const BusNumber = ({ busNumber }: { busNumber: any }) => {
 export default BusNumber;
 
 const BusNumberStyle = styled.div`
-  padding: 5px 15px;
-
-  :first-child {
-    padding-top: 15px;
-  }
+  width: 70px;
 `;

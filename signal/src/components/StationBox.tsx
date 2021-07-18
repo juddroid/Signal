@@ -13,7 +13,7 @@ const StationBox = () => {
         {selectedStation && selectedStation.title}
       </StationNameStyle>
 
-      {selectedStation && <BusList busList={selectedStation.busList} />}
+      {selectedStation && <BusList busInfoList={selectedStation.busInfoList} />}
     </StationBoxStyle>
   );
 };
