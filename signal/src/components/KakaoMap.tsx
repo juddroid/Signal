@@ -38,11 +38,7 @@ const KakaoMap = () => {
     marker.setMap(map);
   }, [position.lat, position.lng]);
 
-  return (
-    <div>
-      <div id="map" style={{ width: '100%', height: '1000px' }}></div>
-    </div>
-  );
+  return <div id="map" style={{ width: '100%', height: '1000px' }}></div>;
 };
 
 export default KakaoMap;

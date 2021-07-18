@@ -1,0 +1,33 @@
+import styled from 'styled-components';
+
+const SearchBar = () => {
+  return (
+    <SearchBarStyle>
+      <input placeholder="가까운 정류장 찾기" />
+      <div>Search</div>
+    </SearchBarStyle>
+  );
+};
+
+export default SearchBar;
+
+const SearchBarStyle = styled.div`
+  width: 300px;
+  height: 50px;
+  display: flex;
+  border: 1px solid #222;
+
+  input {
+    width: 100%;
+    height: 100%;
+    outline: none;
+    padding: 5px 15px;
+  }
+
+  div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+  }
+`;
