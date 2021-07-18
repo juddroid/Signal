@@ -1,9 +1,15 @@
 import styled from 'styled-components';
+import BusNumber from './BusNumber';
+import { v4 as uuidv4 } from 'uuid';
 
-const BusList = () => {
+const BusList = ({ busList }: { busList: any }) => {
+  console.log('busList', busList);
   return (
     <BusListStyle>
-      <BusNameStyle>Bus Name</BusNameStyle>
+      {busList &&
+        busList.map((number: string) => (
+          <BusNumber key={uuidv4()} busNumber={number} />
+        ))}
     </BusListStyle>
   );
 };
@@ -11,11 +17,3 @@ const BusList = () => {
 export default BusList;
 
 const BusListStyle = styled.div``;
-
-const BusNameStyle = styled.div`
-  padding: 5px 15px;
-
-  :first-child {
-    padding-top: 15px;
-  }
-`;

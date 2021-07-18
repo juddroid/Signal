@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
-import { stationListState } from '../Recoil';
+import { useRecoilValue, useRecoilState } from 'recoil';
+import { stationListState, selectedStationState } from '../Recoil';
+import xml2js from 'xml2js';
 
 const kakao = (window as any).kakao;
 
@@ -16,6 +17,8 @@ const KakaoMap = () => {
     lng: 0,
   });
   const stationList = useRecoilValue(stationListState);
+  const [selectedStation, setSelectedStation] =
+    useRecoilState(selectedStationState);
 
   useEffect(() => {
     const sucess = (pos: any) => {
@@ -42,7 +45,24 @@ const KakaoMap = () => {
         content: `<div>${el.stationNm}</div>`,
       };
     });
-    console.log(markerList);
+    console.log('stationList', stationList);
+    console.log('markerList', markerList);
+
+    const getArrivalBusInfoList = async (id: number) => {
+      const base = `/api/rest/stationinfo/getStationByUid`;
+      const serviceKey = `serviceKey=${process.env.REACT_APP_BUS_API_KEY}`;
+      const arsId = `&arsId=${id}`;
+      const queryParams = `?${serviceKey}${arsId}`;
+      const url = base + queryParams;
+
+      const xmlData = await fetch(url).then((res) => res.text());
+      const jsonData = await xml2js.parseStringPromise(xmlData);
+      const busList = await jsonData.ServiceResult.msgBody[0].itemList.map(
+        (el: any) => el.rtNm[0]
+      );
+      return busList;
+    };
+
     if (markerList) {
       for (let i = 0; i < markerList.length; i++) {
         let marker = new kakao.maps.Marker({
@@ -50,8 +70,6 @@ const KakaoMap = () => {
           position: markerList[i].latlng,
           title: markerList[i].title,
         });
-
-        console.log(marker);
 
         let infoWindow = new kakao.maps.InfoWindow({
           content: markerList[i].content,
@@ -63,6 +81,13 @@ const KakaoMap = () => {
         kakao.maps.event.addListener(marker, 'mouseout', () =>
           infoWindow.close()
         );
+        kakao.maps.event.addListener(marker, 'click', async () => {
+          const busList = await getArrivalBusInfoList(stationList[i].arsId[0]);
+          setSelectedStation({
+            title: markerList[i].title,
+            busList: busList,
+          });
+        });
 
         marker.setMap(map);
       }

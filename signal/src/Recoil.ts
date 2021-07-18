@@ -10,7 +10,10 @@ export const arrivalBusInfoListState = atom({
   default: null,
 });
 
-export const seletedStationState = atom({
+export const selectedStationState = atom<{
+  title: any;
+  busList: any;
+} | null>({
   key: 'seletedStationState',
   default: null,
 });

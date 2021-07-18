@@ -1,15 +1,19 @@
 import styled from 'styled-components';
 import BusList from './BusList';
 import { useRecoilValue } from 'recoil';
-import { seletedStationState } from '../Recoil';
+import { selectedStationState } from '../Recoil';
 
 const StationBox = () => {
-  const selectedStation = useRecoilValue(seletedStationState);
+  const selectedStation = useRecoilValue(selectedStationState);
 
+  console.log(selectedStation);
   return (
     <StationBoxStyle>
-      <StationNameStyle>Station Name</StationNameStyle>
-      <BusList />
+      <StationNameStyle>
+        {selectedStation && selectedStation.title}
+      </StationNameStyle>
+
+      {selectedStation && <BusList busList={selectedStation.busList} />}
     </StationBoxStyle>
   );
 };
