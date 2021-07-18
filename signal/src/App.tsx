@@ -6,6 +6,7 @@ import Geolocation from './components/Geolocation';
 import GlobalStyles from './components/styles/GlobalStyles';
 import styled from 'styled-components';
 import SearchBar from './components/SearhBar';
+import StationBox from './components/StationBox';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <OrangeCircle />
           <GreenCircle />
           <Geolocation />
+          <StationBox />
         </SignalStyle>
       </AppStyle>
     </>

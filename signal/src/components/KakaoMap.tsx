@@ -17,8 +17,6 @@ const KakaoMap = () => {
   });
   const stationList = useRecoilValue(stationListState);
 
-  console.log('map station', stationList);
-
   useEffect(() => {
     const sucess = (pos: any) => {
       const position = {
@@ -41,11 +39,10 @@ const KakaoMap = () => {
       return {
         title: el.stationNm,
         latlng: new kakao.maps.LatLng(el.gpsY[0], el.gpsX[0]),
+        content: `<div>${el.stationNm}</div>`,
       };
     });
-
-    console.log('list', markerList);
-
+    console.log(markerList);
     if (markerList) {
       for (let i = 0; i < markerList.length; i++) {
         let marker = new kakao.maps.Marker({
@@ -53,6 +50,20 @@ const KakaoMap = () => {
           position: markerList[i].latlng,
           title: markerList[i].title,
         });
+
+        console.log(marker);
+
+        let infoWindow = new kakao.maps.InfoWindow({
+          content: markerList[i].content,
+        });
+
+        kakao.maps.event.addListener(marker, 'mouseover', () =>
+          infoWindow.open(map, marker)
+        );
+        kakao.maps.event.addListener(marker, 'mouseout', () =>
+          infoWindow.close()
+        );
+
         marker.setMap(map);
       }
     }

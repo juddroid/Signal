@@ -9,3 +9,8 @@ export const arrivalBusInfoListState = atom({
   key: 'arrivalBusInfoListState',
   default: null,
 });
+
+export const seletedStationState = atom({
+  key: 'seletedStationState',
+  default: null,
+});
