@@ -2,14 +2,33 @@ import styled from 'styled-components';
 import BusNumber from './BusNumber';
 import { v4 as uuidv4 } from 'uuid';
 import BusArrivalSec from './BusArrivalSec';
+import { useRecoilState } from 'recoil';
+import { signalState } from '../Recoil';
 
 const BusList = ({ busInfoList }: { busInfoList: any }) => {
+  const [signal, setSignal] = useRecoilState(signalState);
+
   console.log('busInfoList', busInfoList);
+  const handleClickListBox = (e: any) => {
+    const target = e.currentTarget.id;
+    console.log(target);
+    const sig = {
+      green: true,
+      orange: false,
+      red: true,
+    };
+    setSignal(sig);
+  };
+
   return (
     <BusListStyle>
       {busInfoList &&
         busInfoList.map((busInfo: any) => (
-          <BusListBox key={uuidv4()}>
+          <BusListBox
+            key={uuidv4()}
+            id={busInfo.rtNm}
+            onClick={handleClickListBox}
+          >
             <BusNumber busNumber={busInfo.rtNm} />
             <div>
               <BusArrivalSec arrivalSec={busInfo.arrmsg1} />
