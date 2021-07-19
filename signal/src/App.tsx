@@ -1,5 +1,4 @@
 import KakaoMap from './components/KakaoMap';
-import Geolocation from './components/Geolocation';
 import GlobalStyles from './components/styles/GlobalStyles';
 import styled from 'styled-components';
 import SearchBar from './components/SearhBar';
@@ -17,7 +16,6 @@ function App() {
         <Signal />
         <DisplayStyle>
           <SearchBar />
-          <Geolocation />
           <StationBox />
         </DisplayStyle>
       </AppStyle>

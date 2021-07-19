@@ -25,6 +25,7 @@ const SearchBarStyle = styled.div`
     width: 100%;
     height: 100%;
     outline: none;
+    border: none;
     padding: 5px 15px;
   }
 

@@ -11,7 +11,10 @@ const BusList = ({ busInfoList }: { busInfoList: any }) => {
         busInfoList.map((busInfo: any) => (
           <BusListBox key={uuidv4()}>
             <BusNumber busNumber={busInfo.rtNm} />
-            <BusArrivalSec arrivalSec={busInfo.arrmsg1} />
+            <div>
+              <BusArrivalSec arrivalSec={busInfo.arrmsg1} />
+              <BusArrivalSec arrivalSec={busInfo.arrmsg2} />
+            </div>
           </BusListBox>
         ))}
     </BusListStyle>
