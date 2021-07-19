@@ -1,12 +1,10 @@
 import KakaoMap from './components/KakaoMap';
-import OrangeCircle from './components/signal/OrangeCircle';
-import RedCircle from './components/signal/RedCircle';
-import GreenCircle from './components/signal/GreenCircle';
 import Geolocation from './components/Geolocation';
 import GlobalStyles from './components/styles/GlobalStyles';
 import styled from 'styled-components';
 import SearchBar from './components/SearhBar';
 import StationBox from './components/StationBox';
+import Signal from './components/signal';
 
 function App() {
   return (
@@ -16,14 +14,12 @@ function App() {
         <MapStyle>
           <KakaoMap />
         </MapStyle>
-        <SignalStyle>
+        <Signal />
+        <DisplayStyle>
           <SearchBar />
-          <RedCircle />
-          <OrangeCircle />
-          <GreenCircle />
           <Geolocation />
           <StationBox />
-        </SignalStyle>
+        </DisplayStyle>
       </AppStyle>
     </>
   );
@@ -39,4 +35,10 @@ const MapStyle = styled.div`
   width: 100%;
 `;
 
-const SignalStyle = styled.div``;
+const DisplayStyle = styled.div`
+  margin: 10px;
+  margin-left: 0px;
+  border: 1px solid #222;
+  border-radius: 16px;
+  padding: 30px;
+`;

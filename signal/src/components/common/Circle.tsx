@@ -7,8 +7,8 @@ const Circle = ({ color }: { color: string }) => {
 export default Circle;
 
 const CircleStyle = styled.div`
-  width: 50px;
-  height: 50px;
+  width: 250px;
+  height: 250px;
   border: 1px solid ${({ color }) => color};
   border-radius: 50%;
   background: ${({ color }) => color};
