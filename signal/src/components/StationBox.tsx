@@ -29,5 +29,6 @@ const StationNameStyle = styled.div`
   align-items: center;
   border: 1px solid #222;
   padding: 5px 15px;
-  margin-top: 30px;
+  margin-top: 15px;
+  margin-bottom: 10px;
 `;

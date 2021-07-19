@@ -29,8 +29,13 @@ const BusListBox = styled.div`
   display: flex;
   align-items: center;
   padding: 5px 15px;
+  cursor: pointer;
+  transition: all ease-in-out 0.4s;
+  border-radius: 16px;
 
-  :first-child {
-    padding-top: 15px;
+  :hover {
+    background: #222;
+    opacity: 0.9;
+    color: #fff;
   }
 `;

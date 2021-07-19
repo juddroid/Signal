@@ -1,6 +1,10 @@
-import { useState, useEffect } from 'react';
-import { useRecoilValue, useRecoilState } from 'recoil';
-import { stationListState, selectedStationState } from '../Recoil';
+import { useEffect } from 'react';
+import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil';
+import {
+  stationListState,
+  selectedStationState,
+  currentPositionState,
+} from '../Recoil';
 import xml2js from 'xml2js';
 
 const kakao = (window as any).kakao;
@@ -12,25 +16,45 @@ const kakao = (window as any).kakao;
 // }
 
 const KakaoMap = () => {
-  const [position, setPosition] = useState<{ lat: number; lng: number }>({
-    lat: 0,
-    lng: 0,
-  });
-  const stationList = useRecoilValue(stationListState);
-  const [selectedStation, setSelectedStation] =
-    useRecoilState(selectedStationState);
+  const [position, setPosition] =
+    useRecoilState<{ lat: number; lng: number }>(currentPositionState);
+  const [stationList, setStationList] = useRecoilState(stationListState);
+  const setSelectedStation = useSetRecoilState(selectedStationState);
 
-  useEffect(() => {
-    const sucess = (pos: any) => {
-      const position = {
-        lat: pos.coords.latitude,
-        lng: pos.coords.longitude,
-      };
-      setPosition(position);
+  const getCurrentPosition = (pos: any) => {
+    const position = {
+      lat: pos.coords.latitude,
+      lng: pos.coords.longitude,
+    };
+    setPosition(position);
+  };
+
+  const getNearbyStations = async (pos: any) => {
+    const position = {
+      lat: pos.coords.latitude,
+      lng: pos.coords.longitude,
     };
 
-    navigator.geolocation.getCurrentPosition((pos) => sucess(pos));
+    const base = `/api/rest/stationinfo/getStationByPos`;
+    const serviceKey = `serviceKey=${process.env.REACT_APP_BUS_API_KEY}`;
+    const tmX = `&tmX=${position.lng}`;
+    const tmY = `&tmY=${position.lat}`;
+    const radius = `&radius=200`;
+    const queryParams = `?${serviceKey}${tmX}${tmY}${radius}`;
+    const url = base + queryParams;
 
+    const xmlData = await fetch(url).then((res) => res.text());
+    const jsonData = await xml2js.parseStringPromise(xmlData);
+    const stationList = await jsonData.ServiceResult.msgBody[0].itemList;
+    setStationList(stationList);
+  };
+
+  navigator.geolocation.getCurrentPosition((pos) => {
+    getCurrentPosition(pos);
+    getNearbyStations(pos);
+  });
+
+  useEffect(() => {
     let container = document.getElementById('map');
     let options = {
       center: new kakao.maps.LatLng(position.lat, position.lng),
@@ -45,8 +69,8 @@ const KakaoMap = () => {
         content: `<div>${el.stationNm}</div>`,
       };
     });
+
     console.log('stationList', stationList);
-    console.log('markerList', markerList);
 
     const getArrivalBusInfoList = async (id: number) => {
       const base = `/api/rest/stationinfo/getStationByUid`;
@@ -57,7 +81,7 @@ const KakaoMap = () => {
 
       const xmlData = await fetch(url).then((res) => res.text());
       const jsonData = await xml2js.parseStringPromise(xmlData);
-      console.log(jsonData);
+
       const busInfoList = await jsonData.ServiceResult.msgBody[0].itemList.map(
         (el: any) => {
           return {
@@ -105,7 +129,7 @@ const KakaoMap = () => {
         marker.setMap(map);
       }
     }
-  }, [position.lat, position.lng, stationList]);
+  }, [stationList, position]);
 
   return <div id="map" style={{ width: '100%', height: '1000px' }}></div>;
 };

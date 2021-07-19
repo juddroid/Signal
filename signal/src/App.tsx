@@ -13,11 +13,12 @@ function App() {
         <MapStyle>
           <KakaoMap />
         </MapStyle>
-        <Signal />
+
         <DisplayStyle>
           <SearchBar />
           <StationBox />
         </DisplayStyle>
+        <Signal />
       </AppStyle>
     </>
   );
@@ -35,7 +36,6 @@ const MapStyle = styled.div`
 
 const DisplayStyle = styled.div`
   margin: 10px;
-  margin-left: 0px;
   border: 1px solid #222;
   border-radius: 16px;
   padding: 30px;

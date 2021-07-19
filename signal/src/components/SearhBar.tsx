@@ -20,6 +20,7 @@ const SearchBarStyle = styled.div`
   height: 50px;
   display: flex;
   border: 1px solid #222;
+  margin-bottom: 15px;
 
   input {
     width: 100%;

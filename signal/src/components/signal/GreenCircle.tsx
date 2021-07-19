@@ -1,7 +1,7 @@
 import Circle from '../common/Circle';
 
-const GreenCircle = () => {
-  return <Circle color={'green'}></Circle>;
+const GreenCircle = ({ state }: { state: boolean }) => {
+  return <Circle color={'green'} state={state}></Circle>;
 };
 
 export default GreenCircle;
