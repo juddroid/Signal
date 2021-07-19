@@ -21,40 +21,40 @@ const KakaoMap = () => {
   const [stationList, setStationList] = useRecoilState(stationListState);
   const setSelectedStation = useSetRecoilState(selectedStationState);
 
-  const getCurrentPosition = (pos: any) => {
-    const position = {
-      lat: pos.coords.latitude,
-      lng: pos.coords.longitude,
-    };
-    setPosition(position);
-  };
-
-  const getNearbyStations = async (pos: any) => {
-    const position = {
-      lat: pos.coords.latitude,
-      lng: pos.coords.longitude,
-    };
-
-    const base = `/api/rest/stationinfo/getStationByPos`;
-    const serviceKey = `serviceKey=${process.env.REACT_APP_BUS_API_KEY}`;
-    const tmX = `&tmX=${position.lng}`;
-    const tmY = `&tmY=${position.lat}`;
-    const radius = `&radius=200`;
-    const queryParams = `?${serviceKey}${tmX}${tmY}${radius}`;
-    const url = base + queryParams;
-
-    const xmlData = await fetch(url).then((res) => res.text());
-    const jsonData = await xml2js.parseStringPromise(xmlData);
-    const stationList = await jsonData.ServiceResult.msgBody[0].itemList;
-    setStationList(stationList);
-  };
-
-  navigator.geolocation.getCurrentPosition((pos) => {
-    getCurrentPosition(pos);
-    getNearbyStations(pos);
-  });
-
   useEffect(() => {
+    const getCurrentPosition = (pos: any) => {
+      const position = {
+        lat: pos.coords.latitude,
+        lng: pos.coords.longitude,
+      };
+      setPosition(position);
+    };
+
+    const getNearbyStations = async (pos: any) => {
+      const position = {
+        lat: pos.coords.latitude,
+        lng: pos.coords.longitude,
+      };
+
+      const base = `/api/rest/stationinfo/getStationByPos`;
+      const serviceKey = `serviceKey=${process.env.REACT_APP_BUS_API_KEY}`;
+      const tmX = `&tmX=${position.lng}`;
+      const tmY = `&tmY=${position.lat}`;
+      const radius = `&radius=200`;
+      const queryParams = `?${serviceKey}${tmX}${tmY}${radius}`;
+      const url = base + queryParams;
+
+      const xmlData = await fetch(url).then((res) => res.text());
+      const jsonData = await xml2js.parseStringPromise(xmlData);
+      const stationList = await jsonData.ServiceResult.msgBody[0].itemList;
+      setStationList(stationList);
+    };
+
+    navigator.geolocation.getCurrentPosition((pos) => {
+      getCurrentPosition(pos);
+      getNearbyStations(pos);
+    });
+
     let container = document.getElementById('map');
     let options = {
       center: new kakao.maps.LatLng(position.lat, position.lng),
@@ -130,6 +130,49 @@ const KakaoMap = () => {
       }
     }
   }, [stationList, position]);
+
+  console.log('position', position);
+  console.log('stationList', stationList && stationList[1]);
+
+  function getDistanceFromLatLonInKm(
+    x1: number,
+    x2: number,
+    y1: number,
+    y2: number
+  ) {
+    function deg2rad(deg: number) {
+      return deg * (Math.PI / 180);
+    }
+    const r = 6371; //지구의 반지름(km)
+    const dLat = deg2rad(x2 - x1);
+    const dLon = deg2rad(y2 - y1);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(deg2rad(x1)) *
+        Math.cos(deg2rad(x2)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const d = r * c; // Distance in km
+    return Math.round(d * 1000);
+  }
+
+  if (position && stationList) {
+    let x = Math.abs(position.lat - +stationList[1].gpsX[0]) ** 2;
+    let y = Math.abs(position.lng - +stationList[1].gpsY[0]) ** 2;
+    let d = Math.sqrt(x + y);
+
+    console.log(d);
+
+    let d2 = getDistanceFromLatLonInKm(
+      position.lat,
+      +stationList[3].gpsY[0],
+      position.lng,
+      +stationList[3].gpsX[0]
+    );
+
+    console.log(d2);
+  }
 
   return <div id="map" style={{ width: '100%', height: '1000px' }}></div>;
 };
