@@ -54,7 +54,9 @@ const KakaoMap = () => {
       getCurrentPosition(pos);
       getNearbyStations(pos);
     });
+  }, []);
 
+  useEffect(() => {
     let container = document.getElementById('map');
     let options = {
       center: new kakao.maps.LatLng(position.lat, position.lng),

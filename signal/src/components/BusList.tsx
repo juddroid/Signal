@@ -12,6 +12,7 @@ const BusList = ({ busInfoList }: { busInfoList: any }) => {
   const handleClickListBox = (e: any) => {
     const target = e.currentTarget.id;
     console.log(target);
+    console.log('타겟과 List[타겟]의');
     const sig = {
       green: true,
       orange: false,
