@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import {
   stationListState,
   selectedStationState,
@@ -72,8 +72,6 @@ const KakaoMap = () => {
       };
     });
 
-    console.log('stationList', stationList);
-
     const getArrivalBusInfoList = async (id: number) => {
       const base = `/api/rest/stationinfo/getStationByUid`;
       const serviceKey = `serviceKey=${process.env.REACT_APP_BUS_API_KEY}`;
@@ -122,9 +120,11 @@ const KakaoMap = () => {
             stationList[i].arsId[0]
           );
           console.log(busInfoList);
+
           setSelectedStation({
             title: markerList[i].title,
             busInfoList: busInfoList,
+            dist: stationList[i].dist[0],
           });
         });
 
@@ -134,7 +134,7 @@ const KakaoMap = () => {
   }, [stationList, position]);
 
   console.log('position', position);
-  console.log('stationList', stationList && stationList[1]);
+  console.log('stationList', stationList);
 
   return <div id="map" style={{ width: '100%', height: '1000px' }}></div>;
 };
